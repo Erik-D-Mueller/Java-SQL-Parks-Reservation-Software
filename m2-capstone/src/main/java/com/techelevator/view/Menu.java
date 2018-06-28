@@ -52,43 +52,43 @@ public void displayParkInfo(Park parkObject) {
 	
 }
 
-public void displayCampgrounds( ArrayList<Campground> arrayList) {
+public Campground displayAndGetTheirCampgroundChoice( ArrayList<Campground> arrayList) {
 	
 	System.out.println("Name		Open		Close		Daily Fee");
 	
 	String[] campgroundInfoArray = new String[arrayList.size()];
 	
 	// This concatenates all the campground information into one long String, before sending it to the menu disploay method
+	
+	
+	
 	for(int i = 0; i< arrayList.size(); i++) {
 		
-		campgroundInfoArray[i] = (" " + arrayList.get(i).getName() + "\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee() + " ");
+		campgroundInfoArray[i] = (arrayList.get(i).getName() + "\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee());
 	
-		String campgroundInfoAnswer = getChoiceFromOptions(campgroundInfoArray); 
-		
-		
 	}
 	
+		// Send the concatenated campground info strings to getChoiceFromOptions() and let them choose
+		String campgroundInfoAnswerString = (String)getChoiceFromOptions(campgroundInfoArray);
+		
 	
-	
-	
-	
-	
-	
-	
-	
-	
-}
-
-
-
-
-
-
-
-
-
-
-
+		Campground theirChosenCampgroundObject = new Campground();
+		
+		// Find which campground Object that they chose
+		for(int i = 0; i< arrayList.size(); i++) {
+			
+			if(campgroundInfoAnswerString.contains(arrayList.get(i).getName() + "\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee()))
+			{
+				theirChosenCampgroundObject = arrayList.get(i);		
+			}
+			
+		}
+			
+			
+		// theirChosenCampgroundObject is now it's namesake
+		return theirChosenCampgroundObject;
+		
+	}
 	
 	
 	private Object getChoiceFromUserInput(Object[] options) {

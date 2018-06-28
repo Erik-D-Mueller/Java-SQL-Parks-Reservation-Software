@@ -33,18 +33,13 @@ public class CampgroundCLI {
 	private SiteDAO siteDAO;
 	private CampgroundDAO campgroundDAO;
 	
-
-	
-	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
 		dataSource.setUsername("postgres");
 		//dataSource.setPassword("postgres1");
 		
-		
 
-		
 		
 		CampgroundCLI application = new CampgroundCLI(dataSource);
 		application.run();
@@ -117,30 +112,18 @@ this.menu = new Menu(System.in, System.out);
 			// Displays all the info about the park	
 			menu.displayParkInfo( theirChosenParkObject );
 				
-			
 			String mainMenuChoice = (String)menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-				
+			
+			ArrayList<Campground> campgroundList = new ArrayList<Campground>();
 			
 			if( mainMenuChoice == "View Campgrounds") {
 				
-				ArrayList<Campground> campgroundList = new ArrayList<Campground>();
-				
-				campgroundList = campgroundDAO.getAllCampgroundsInParkId( 4 );
-				
-								
+				campgroundList = campgroundDAO.getAllCampgroundsInParkId( theirChosenParkObject.getPark_id());
+							
 			}
-					
 			
-			
-			// This loop grabs the correct park object based on the name they chose
-						for(int i =0; i < parkList.size(); i++) {
-							if( parkList.get(i).getName().contains(parkChoice) ) {
-								theirChosenParkObject = parkList.get(i);
-							}
-						}
-			
-			
-			getAllCampgroundsInParkId(int id)
+			// Send the list of campground objects to the menu method to be display them and return the chosen campground object
+			Campground theirChosenCampgroundObject = menu.displayAndGetTheirCampgroundChoice(campgroundList);
 			
 				
 			}
