@@ -39,7 +39,7 @@ public class CampgroundCLI {
 		dataSource.setUsername("postgres");
 		//dataSource.setPassword("postgres1");
 		
-
+ 
 		
 		CampgroundCLI application = new CampgroundCLI(dataSource);
 		application.run();
