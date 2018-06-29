@@ -9,6 +9,7 @@ public class Site {
 	private boolean accessible;
 	private int max_rv_length;
 	private boolean utilities;
+	private String total_amount;
 	public long getSite_id() {
 		return site_id;
 	}
@@ -50,6 +51,12 @@ public class Site {
 	}
 	public void setUtilities(boolean utilities) {
 		this.utilities = utilities;
+	}
+	public String getTotal_amount() {
+		return total_amount;
+	}
+	public void setTotal_amount(String total_amount) {
+		this.total_amount = total_amount;
 	}
 	
 	

@@ -33,7 +33,7 @@ public class JDBCParkDAO implements ParkDAO {
 		
 		ArrayList<Park> parkList = new ArrayList<Park>();
 		
-		String sqlGetAllParks = "SELECT park_id, name from park";
+		String sqlGetAllParks = "SELECT * from park";
 		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetAllParks);
 		
@@ -68,13 +68,13 @@ public class JDBCParkDAO implements ParkDAO {
 	}
 	
 	
-
+	@Override
 	public Park getParkByName(String name) {
 		
 		
-		String sqlGetParkById = "SELECT * from park where name LIKE (?)";
+		String sqlGetParkByName = "SELECT * from park where name LIKE (?)";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetParkById, id);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetParkByName, name);
 		
 		Park parkObject = createParkObject(results);
 			
@@ -94,9 +94,15 @@ public class JDBCParkDAO implements ParkDAO {
 		parkObject1.setEstablish_date(results.getDate("establish_date"));
 		parkObject1.setArea( results.getInt("area"));
 		parkObject1.setVisitors( results.getInt("visitors")  );
-		parkObject1.setDescription( results.getString("desctiption"));
+		parkObject1.setDescription( results.getString("description"));
 		
 		return parkObject1;
+	}
+
+	@Override
+	public Park getParkById(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

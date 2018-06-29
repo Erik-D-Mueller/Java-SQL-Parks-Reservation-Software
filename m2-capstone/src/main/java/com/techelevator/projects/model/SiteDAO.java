@@ -1,5 +1,7 @@
 package com.techelevator.projects.model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface SiteDAO {
@@ -9,13 +11,6 @@ public interface SiteDAO {
 	 * 
 	 * @return available sites as objects in a List
 	 */
-	public List<Site> getAvailablesites();
+	public ArrayList<Site> getAvailableSites(int campground_id, LocalDate arrival_date, LocalDate depart_date);
 
-
-	/**
-	 * Get available sites across the entire park system from the datastore.
-	 * 
-	 * @return available sites as objects in a List
-	 */
-	public Park getParkById(Long id);
 }

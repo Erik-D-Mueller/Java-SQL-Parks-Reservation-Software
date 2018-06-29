@@ -22,6 +22,6 @@ public interface ParkDAO {
 	public Park getParkById(int id);
 
 
-public Park getParkByName(String name);
+	public Park getParkByName(String name);
 
 }

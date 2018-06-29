@@ -3,11 +3,13 @@ package com.techelevator.view;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.techelevator.projects.model.Campground;
 import com.techelevator.projects.model.Park;
+import com.techelevator.projects.model.Site;
 
 public class Menu {
 
@@ -25,8 +27,9 @@ public class Menu {
 		Object choice = null;
 		while(choice == null) {
 			displayMenuOptions(options);
-			choice = getChoiceFromUserInput(options);
+			choice = getChoiceFromUserInput(options);	
 		}
+		
 		return choice;
 	}
 
@@ -37,60 +40,73 @@ public class Menu {
 		while(choice == null) {
 			displayMenuOptions(options,currentAmountEntered);
 			choice = getChoiceFromUserInput(options);
+			if(Integer.parseInt((String) choice)==0) { System.exit(0);}
 		}
 		return choice;
 	}
 
-public void displayParkInfo(Park parkObject) {
-	
-	System.out.println(parkObject.getName());
-	System.out.println(parkObject.getLocation());
-	System.out.println(parkObject.getEstablish_date());
-	System.out.println(parkObject.getArea());
-	System.out.println(parkObject.getVisitors());
-	System.out.println(parkObject.getDescription());
-	
-}
+	public void displayParkInfo(Park parkObject) {
+		System.out.println("Park Information Screen");
+		System.out.println(parkObject.getName());
+		System.out.println(parkObject.getLocation());
+		System.out.println(parkObject.getEstablish_date());
+		System.out.println(parkObject.getArea());
+		System.out.println(parkObject.getVisitors());
+		System.out.println(parkObject.getDescription());
+		
+	}
 
-public Campground displayAndGetTheirCampgroundChoice( ArrayList<Campground> arrayList) {
-	
-	System.out.println("Name		Open		Close		Daily Fee");
-	
-	String[] campgroundInfoArray = new String[arrayList.size()];
-	
-	// This concatenates all the campground information into one long String, before sending it to the menu disploay method
-	
-	
-	
-	for(int i = 0; i< arrayList.size(); i++) {
-		
-		campgroundInfoArray[i] = (arrayList.get(i).getName() + "\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee());
-	
+	public void displayCampgroundInfo(ArrayList<Campground> campgroundList, Park park) {
+		System.out.println("Park Campgrounds");
+		System.out.println(park.getName()+" National Park Campgrounds");
+		System.out.println("   Name \t\tOpen \tClose \tDaily Fee");
+		for(int i = 0; i< campgroundList.size(); i++) {	
+			int optionNum = i+1;
+			out.println(optionNum+") "+(campgroundList.get(i).getName() + "\t\t" + getMonthInName(campgroundList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(campgroundList.get(i).getOpen_to_mm())  + "\t" + campgroundList.get(i).getDaily_fee()));
+		}	
+		System.out.println();
 	}
-	
-		// Send the concatenated campground info strings to getChoiceFromOptions() and let them choose
-		String campgroundInfoAnswerString = (String)getChoiceFromOptions(campgroundInfoArray);
-		
-	
-		Campground theirChosenCampgroundObject = new Campground();
-		
-		// Find which campground Object that they chose
-		for(int i = 0; i< arrayList.size(); i++) {
-			
-			if(campgroundInfoAnswerString.contains(arrayList.get(i).getName() + "\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee()))
-			{
-				theirChosenCampgroundObject = arrayList.get(i);		
+
+	public Campground campgroundReservationMenu( ArrayList<Campground> arrayList) {
+			while (true) {
+				System.out.println();
+				System.out.println();
+				System.out.println("Search for Campground Reservation");
+				System.out.println("   Name \t\tOpen \tClose \tDaily Fee");
+				for(int i = 0; i< arrayList.size(); i++) {	
+					int optionNum = i+1;
+					System.out.println(optionNum+") "+(arrayList.get(i).getName() + "\t\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee()));
+				}	
+				// Send the concatenated campground info strings to getChoiceFromOptions() and let them choose
+				System.out.println();
+				System.out.println("Which campground (enter 0 to cancel)");
+				String userInput = in.nextLine();
+				if (Integer.parseInt(userInput) <= arrayList.size()) {
+					Campground theirChosenCampgroundObject = new Campground();
+					theirChosenCampgroundObject = arrayList.get(Integer.parseInt(userInput)-1);
+					return theirChosenCampgroundObject;
+				}
 			}
-			
-		}
-			
-			
-		// theirChosenCampgroundObject is now it's namesake
-		return theirChosenCampgroundObject;
-		
 	}
+		
 	
-	
+	public void displayAvailableSites(ArrayList<Site> siteList) {
+			
+		System.out.println("Results Matching Your Search Criteria");
+		System.out.println("Site No. \tMax Occup. \tAccessible? \tMax RV Length \tUtility \tCost");
+		for(int i = 0; i< siteList.size(); i++) {	
+			System.out.println(siteList.get(i).getSite_number());
+			System.out.print(siteList.get(i).getMax_occupancy());
+			System.out.print(siteList.get(i).isAccessible());
+			System.out.print(siteList.get(i).getMax_rv_length());
+			System.out.print(siteList.get(i).isUtilities());
+			System.out.print(siteList.get(i).getTotal_amount());
+			System.out.println();
+		}	
+	}
+
+
+
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
 		String userInput = in.nextLine();
@@ -130,7 +146,30 @@ public Campground displayAndGetTheirCampgroundChoice( ArrayList<Campground> arra
 		out.flush();
 	}
 	
-public String getMonthInName(int mm) {
+	
+	public LocalDate receiveDateFromUser(String message) {
+		
+		String[] dateArray;
+		
+		LocalDate date;
+		
+		System.out.println(message);
+		
+		String userInput = in.nextLine();
+		
+		// dateArray[0] is  two digit month, [1] is two digit day, [2] is 4 digit yeaer
+		dateArray = userInput.split("/");;
+		
+		// year, month, day LocalDate.of(int, int, int)
+		
+		date = LocalDate.of(Integer.parseInt(dateArray[2]), Integer.parseInt(dateArray[0]), Integer.parseInt(dateArray[1])); 
+
+		return date;
+		
+	}
+	
+	
+	public String getMonthInName(int mm) {
 		
 		if(mm==1) {return "January";}
 		if(mm==2) {return "February";}
@@ -146,7 +185,6 @@ public String getMonthInName(int mm) {
 		return "December";
 		
 	}
-	
 	
 	
 }

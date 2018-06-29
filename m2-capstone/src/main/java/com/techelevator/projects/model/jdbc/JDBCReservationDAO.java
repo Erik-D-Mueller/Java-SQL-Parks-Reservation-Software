@@ -1,14 +1,25 @@
 package com.techelevator.projects.model.jdbc;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import com.techelevator.projects.model.Park;
 import com.techelevator.projects.model.Reservation;
+import com.techelevator.projects.model.ReservationDAO;
 
-public class JDBCReservationDAO {
+public class JDBCReservationDAO implements ReservationDAO {
 
+	private JdbcTemplate jdbcTemplate;   
+	public JDBCReservationDAO(DataSource dataSource) {
+		
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	
+	}
 	
 
 	
@@ -26,6 +37,18 @@ public class JDBCReservationDAO {
 		
 		return reservationObject;
 		
+	}
+
+	@Override
+	public List<Park> getAllParks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Park getParkById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 

@@ -3,24 +3,24 @@ package com.techelevator.projects.model;
 
 public class Campground {
 
-	private long campground_id;
-	private long park_id;
+	private int campground_id;
+	private int park_id;
 	private String name;
 	private int open_from_mm;
 	private int open_to_mm;
 	private float daily_fee;
 	
 	
-	public long getCampground_id() {
+	public int getCampground_id() {
 		return campground_id;
 	}
-	public void setCampground_id(long campground_id) {
+	public void setCampground_id(int campground_id) {
 		this.campground_id = campground_id;
 	}
-	public long getPark_id() {
+	public int getPark_id() {
 		return park_id;
 	}
-	public void setPark_id(long park_id) {
+	public void setPark_id(int park_id) {
 		this.park_id = park_id;
 	}
 	public String getName() {

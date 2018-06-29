@@ -1,5 +1,6 @@
 package com.techelevator.projects.model.jdbc;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.sql.DataSource;
@@ -9,8 +10,9 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.techelevator.projects.model.Park;
 import com.techelevator.projects.model.Site;
+import com.techelevator.projects.model.SiteDAO;
 
-public class JDBCSiteDAO {
+public class JDBCSiteDAO implements SiteDAO {
 
 	private JdbcTemplate jdbcTemplate;   // What does this line do?
 
@@ -20,57 +22,38 @@ public class JDBCSiteDAO {
 	
 	}
 	
-	ArrayList<Site> siteList = new ArrayList<Site>();
-	
-
-	//Need campground id, start date and enddate
-	
-	String sqlGetAvailableSites = "SELECT s.site_id, s.max_occupancy, s.accessible, s.max_rv_length, s.utilities, c.daily_fee FROM site s\n" + 
-			"JOIN campground c ON ? = s.campground_id\n" + 
-			"JOIN reservation r ON s.site_id = r.site_id\n" + 
-			"WHERE c.campground_id = ? AND s.site_id NOT IN\n" + 
-			"(SELECT r.site_id from reservation r\n" + 
-			"WHERE (r.from_date, r.to_date) OVERLAPS (?::DATE, ?::DATE));";
-	
-	SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetAvailableSites, null,null,null,null);
-	
-	
-	//SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetParkById, id);
-	
-	
-	while(results.next()) {
+	public ArrayList<Site> getAvailableSites(int campground_id, LocalDate arrival_date, LocalDate depart_date) {
+		ArrayList<Site> availableSiteList = new ArrayList<Site>();
+		String sqlGetAvailableSites = "SELECT distinct site.site_id, site.campground_id, site.site_number, site.max_occupancy, site.accessible, site.max_rv_length, site.utilities, (?::date - ?::date)*campground.daily_fee AS total_fee\n" + 
+				"FROM site JOIN campground ON site.campground_id = campground.campground_id WHERE site.campground_id = ? AND site.site_id\n" + 
+				"NOT IN\n" + 
+				"(SELECT site.site_id FROM site\n" + 
+				"JOIN reservation ON reservation.site_id = site.site_id\n" + 
+				"WHERE ((to_date(?, 'YYYY/MM/DD')) <= reservation.to_date AND (to_date(?, 'YYYY/MM/DD')) >= reservation.from_date))";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetAvailableSites, depart_date, arrival_date, campground_id, arrival_date, depart_date);
+		while(results.next()) {
+			Site siteObject = createSiteObject(results);
+			availableSiteList.add(siteObject);
+		}
 		
-		Site siteObject = createSiteObject(results);
-		
-		siteList.add(siteObject);
+		return availableSiteList;
 	}
-	
-	return parkList;
-
-
-
-	private long site_id;
-	private long campground_id;
-	private int site_number;
-	private int max_occupancy;
-	private boolean accessible;
-	private int max_rv_length;
-	private boolean utilities;
 
 	
 	
-private Site createSiteObject(SqlRowSet results) {
-	Site siteObject = new Site();
-	
-	siteObject.setSite_id(results.getInt("side_id"));
-	siteObject.setCampground_id(results.getInt("campground_id"));
-	siteObject.setSite_number(results.getInt("site_number"));
-	siteObject.setMax_occupancy(results.getInt("max_occupancy"));
-	siteObject.setAccessible(results.getBoolean("accessible"));
-	siteObject.setMax_rv_length(results.getInt("max_rv_length"));
-	siteObject.setUtilities(results.getBoolean("utilities"));
-	
-	return siteObject;
+	private Site createSiteObject(SqlRowSet results) {
+		Site siteObject = new Site();
+		
+		siteObject.setSite_id(results.getInt("site_id"));
+		siteObject.setCampground_id(results.getInt("campground_id"));
+		siteObject.setSite_number(results.getInt("site_number"));
+		siteObject.setMax_occupancy(results.getInt("max_occupancy"));
+		siteObject.setAccessible(results.getBoolean("accessible"));
+		siteObject.setMax_rv_length(results.getInt("max_rv_length"));
+		siteObject.setUtilities(results.getBoolean("utilities"));
+		siteObject.setTotal_amount("total_fee");
+		
+		return siteObject;
 	
 }
 	

@@ -74,8 +74,8 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		
 		Campground campgroundObject1 = new Campground();		
 		
-		campgroundObject1.setCampground_id(results.getLong("campground_id"));
-		campgroundObject1.setPark_id(results.getLong("park_id"));
+		campgroundObject1.setCampground_id(results.getInt("campground_id"));
+		campgroundObject1.setPark_id(results.getInt("park_id"));
 		campgroundObject1.setName(results.getString("name"));
 		campgroundObject1.setOpen_from_mm(results.getInt("open_from_mm"));
 		campgroundObject1.setOpen_to_mm(results.getInt("open_to_mm"));
