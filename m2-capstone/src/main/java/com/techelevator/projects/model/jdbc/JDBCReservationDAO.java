@@ -42,7 +42,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 
 	
 	@Override
-	public int saveReservation(Reservation reservationObject) {
+	public Reservation saveReservation(Reservation reservationObject) {
 		
 		String sqlCreateReservation = "INSERT INTO reservation (site_id, name, from_date, to_date) VALUES (?, ?, ?, ?)";
 		
@@ -53,11 +53,9 @@ public class JDBCReservationDAO implements ReservationDAO {
 		String sqlGetReservation = "SELECT reservation_id from reservation WHERE name = ? AND site_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetReservation, name, site_id);
 		reservationObject.setReservation_id(results.getInt("reservation_id"));
-		return reservationObject.getReservation_id();
+		
+		return reservationObject;
 			
-		
-		
-		
 		
 		
 	}

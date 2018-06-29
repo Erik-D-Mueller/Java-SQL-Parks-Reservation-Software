@@ -13,7 +13,7 @@ import com.techelevator.projects.model.Campground;
 import com.techelevator.projects.model.CampgroundDAO;
 import com.techelevator.projects.model.Park;
 import com.techelevator.projects.model.ParkDAO;
-
+import com.techelevator.projects.model.Reservation;
 import com.techelevator.projects.model.ReservationDAO;
 import com.techelevator.projects.model.Site;
 import com.techelevator.projects.model.SiteDAO;
@@ -82,129 +82,31 @@ public class CampgroundCLI {
 	public void run() {
 
 		
-		while(true) {
+		while(true) {			
 			
-			ArrayList<Park> parkList = new ArrayList<Park>();
+			Park theirChosenParkObjectFromScreenOne;
+			String theirChoiceFromScreenTwo;
+			String theirChoiceFromScreenThree="";
 			
-			parkList = parkDAO.getAllParks();
+			// Ask what park they want to look at
+			theirChosenParkObjectFromScreenOne = screenOne();
 			
-			
-			String[] parkNameArray = new String[parkList.size()+1];
-			
-			
-			parkNameArray = convertObjectListToNamesArray(parkList);
-
-			System.out.println("Select a Park for Further Details");
-			System.out.println();
-			
-			//Sends the names of parks, receives their choice as a string
-			String parkChoice = (String)menu.getChoiceFromOptions(parkNameArray);
-			
-			Park theirChosenParkObject = new Park();
-			
-			// This loop grabs the correct park object based on the name they chose
-			for(int i =0; i < parkList.size(); i++) {
-				if( parkList.get(i).getName().contains(parkChoice) ) {
-					theirChosenParkObject = parkList.get(i);
-				}
-			}
-				
-			
-			// Displays all the info about the park	
-			System.out.println();
-			
-			menu.displayParkInfo( theirChosenParkObject );
-				
-			String mainMenuChoice = (String)menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-			
-			ArrayList<Campground> campgroundList = new ArrayList<Campground>();
-			
-			
-			
-			if( mainMenuChoice == "View Campgrounds") {
-				
-				campgroundList = campgroundDAO.getAllCampgroundsInParkId( theirChosenParkObject.getPark_id());
-				
-				
-				// Send the list of campgrounds to the menu method to be displayed'
-				menu.displayCampgroundInfo(campgroundList, theirChosenParkObject);
-				
-				
-				
-				
-				// Send option to search for available reservations to menu method
-				
-				System.out.println("Select a Command:");
-				System.out.println();
-				
-				
-				
-				
-				
-				
-				String checkReservationMenuChoice = (String)menu.getChoiceFromOptions(CAMPGROUND_RESERVATION_MENU_OPTIONS);
-				
-				
-				
-				
-				// Check then act on menu response of Search for Available Reservations
-				
-				Campground theirChosenCampgroundObject=null;
-				LocalDate reservation_Chosen_ArrivalDate=null;
-				LocalDate reservation_Chosen_DepartureDate=null;
-				
-				if(checkReservationMenuChoice == "Search for Available Reservation") {
-					
-					// displays the campground list again
-					theirChosenCampgroundObject = menu.campgroundReservationMenu(campgroundList);
-					
-					
-					reservation_Chosen_ArrivalDate = menu.receiveDateFromUser(" What is the arrival date? __/__/____ ");
-					
-					reservation_Chosen_DepartureDate = menu.receiveDateFromUser(" What is the departure date? __/__/____ ");
-					
-										
-					// gets the list of availalbe campsite objects
-					availableSiteList = siteDAO.getAvailableSites(theirChosenCampgroundObject.getCampground_id(), reservation_Chosen_ArrivalDate, reservation_Chosen_DepartureDate);
-					
-					
-					menu.displayAvailableSites(availableSiteList);
-					
-					
-					
-					
-			}
-			// Send the list of campgrounds to the menu method to be displayed'
-		
-			
-			// Send the list of campground objects to the menu method to be display them and return the chosen campground object
-			// Campground theirChosenCampgroundObject = menu.displayAndGetTheirCampgroundChoice(campgroundList);
-			
-			//NEED CHECK FOR "RETURN TO PREVIOUS SCREEN" RESPONSE 
-			
-			
-				
-				
-				
-			}
-			//Check for site availability
-		}
-	}
-			
+			// Display the park info, ask what they want to do
+			theirChoiceFromScreenTwo = screenTwo(theirChosenParkObjectFromScreenOne);
 	
 			
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			if( theirChoiceFromScreenTwo.contains("View Campgrounds")) 						{  				theirChoiceFromScreenThree = screenThree(theirChosenParkObjectFromScreenOne);		}
+			if( theirChoiceFromScreenTwo.contains("Search for Reservation")) 				{  				screenFour(theirChosenParkObjectFromScreenOne);										}
+			if( theirChoiceFromScreenTwo.contains("Return to Previous Screen")) 			{  				theirChosenParkObjectFromScreenOne = screenOne();									}									
+			
 
+			if( theirChoiceFromScreenThree.contains("Search for Available Reservation")) 	{  				screenFour(theirChosenParkObjectFromScreenOne); 									}					
+			if( theirChoiceFromScreenThree.contains("Return to Previous Screen")) 			{ 				theirChoiceFromScreenTwo = screenTwo(theirChosenParkObjectFromScreenOne); 			}
+										
+	}
+			
+	}	
+			
 
 		
 		// Takes an ArrayList of Park objects, returns an array of strings of their names
@@ -221,7 +123,118 @@ public class CampgroundCLI {
 			parkNameArray[parkList.size()] = "quit";
 			return parkNameArray;
 		}
-			
 		
+		
+		
+		// This method controls everything related to Screen One
+		private Park screenOne() {
+			
+			ArrayList<Park> parkList = new ArrayList<Park>();
+			
+			parkList = parkDAO.getAllParks();
+			
+			String[] parkNameArray = new String[parkList.size()+1];
+			
+			parkNameArray = convertObjectListToNamesArray(parkList);
+
+			System.out.println("Select a Park for Further Details");
+			System.out.println();
+			
+			//Sends the names of parks, receives their choice as a string
+			String parkChoice = (String)menu.getChoiceFromOptions(parkNameArray);
+			
+			Park theirChosenParkObject = new Park();
+			
+			// This loop grabs the correct park object based on the name they chose
+				for(int i =0; i < parkList.size(); i++) {
+					if( parkList.get(i).getName().contains(parkChoice) ) {
+						theirChosenParkObject = parkList.get(i);
+					}
+				}
+				
+			return theirChosenParkObject;
+			
+		}
+				
+		private String screenTwo(Park theirChosenParkObject ) {
+			
+			System.out.println();
+			
+			// Displays all the info about the park	
+			menu.displayParkInfo( theirChosenParkObject );
+			
+			String theirResponse = (String)menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
+			
+			return theirResponse;
+			
+		}
+		
+		
+		
+		// Display the campgrounds in that park, ask what they want to do
+		private String screenThree(Park theirChosenParkObject) {
+			
+			ArrayList<Campground> campgroundList = new ArrayList<Campground>();
+			
+			// generate a list of all the campground objects in their chosen park
+			campgroundList = campgroundDAO.getAllCampgroundsInParkId( theirChosenParkObject.getPark_id());
+			
+			// Send the list of campgrounds to the a method in menu to be displayed'
+			menu.displayCampgroundInfo(campgroundList, theirChosenParkObject);
+			
+			// Send option to search for available reservations to menu method
+			System.out.println("Select a Command:");
+			System.out.println();
+						
+			String theirResponse = (String)menu.getChoiceFromOptions(CAMPGROUND_RESERVATION_MENU_OPTIONS);
+			
+			return  theirResponse;
+			
+		}
+			
+		private void screenFour(Park theirChosenParkObject) {
+			
+			Reservation reservationObject = new Reservation();
+			Campground theirChosenCampgroundObject;
+			LocalDate reservation_Chosen_ArrivalDate;
+			LocalDate reservation_Chosen_DepartureDate=null;
+			
+			ArrayList<Campground> campgroundList = new ArrayList<Campground>();
+			
+			// generate a list of all the campground objects in their chosen park
+			campgroundList = campgroundDAO.getAllCampgroundsInParkId( theirChosenParkObject.getPark_id());
+			
+			// Send the list of campgrounds to the a method in menu to be displayed'
+			menu.displayCampgroundInfo(campgroundList, theirChosenParkObject);
+			
+			System.out.println("Which Campground?");
+			
+			// displays the campground list again
+			theirChosenCampgroundObject = menu.campgroundReservationMenu(campgroundList);
+			
+			
+			// get their desired arrive date
+			reservation_Chosen_ArrivalDate = menu.receiveDateFromUser(" What is the arrival date? __/__/____ ");
+				
+			// get their desired departure date
+			reservation_Chosen_DepartureDate = menu.receiveDateFromUser(" What is the departure date? __/__/____ ");
+			
+			reservationObject.setFrom_date(reservation_Chosen_ArrivalDate);
+			
+			reservationObject.setTo_date(reservation_Chosen_DepartureDate);
+			
+			availableSiteList = siteDAO.getAvailableSites(theirChosenCampgroundObject.getCampground_id(), reservationObject.getFrom_date(), reservationObject.getTo_date());
+			
+			menu.displayAvailableSites(availableSiteList);
+			
+			/////////////////
+			
+			System.out.println("The reservation has been made and the confirmaiton ID is " + reservationObject.getReservation_id() );
+			
+			System.exit(0);
+			
+		}
+		
+
 		}
 
