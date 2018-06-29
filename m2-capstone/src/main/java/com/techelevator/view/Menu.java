@@ -1,5 +1,6 @@
 package com.techelevator.view;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -37,6 +38,7 @@ public class Menu {
 	
 	public Object getChoiceFromOptions(Object[] options, String currentAmountEntered) {
 		Object choice = null;
+		
 		while(choice == null) {
 			displayMenuOptions(options,currentAmountEntered);
 			choice = getChoiceFromUserInput(options);
@@ -46,37 +48,53 @@ public class Menu {
 	}
 
 	public void displayParkInfo(Park parkObject) {
-		System.out.println("Park Information Screen");
+		
 		System.out.println(parkObject.getName());
 		System.out.println(parkObject.getLocation());
 		System.out.println(parkObject.getEstablish_date());
 		System.out.println(parkObject.getArea());
 		System.out.println(parkObject.getVisitors());
+		System.out.println();
 		System.out.println(parkObject.getDescription());
 		
 	}
+	
+	
 
 	public void displayCampgroundInfo(ArrayList<Campground> campgroundList, Park park) {
-		System.out.println("Park Campgrounds");
+		System.out.println();
 		System.out.println(park.getName()+" National Park Campgrounds");
-		System.out.println("   Name \t\tOpen \tClose \tDaily Fee");
+		System.out.println();
+		System.out.println("   Name            \tOpen \tClose   \tDaily Fee");
+		System.out.println("------------------------------------------------------");
+		
 		for(int i = 0; i< campgroundList.size(); i++) {	
 			int optionNum = i+1;
-			out.println(optionNum+") "+(campgroundList.get(i).getName() + "\t\t" + getMonthInName(campgroundList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(campgroundList.get(i).getOpen_to_mm())  + "\t" + campgroundList.get(i).getDaily_fee()));
+			System.out.println(optionNum+") "+(campgroundList.get(i).getName() + "      \t" + getMonthInName(campgroundList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(campgroundList.get(i).getOpen_to_mm())  + "  \t" + campgroundList.get(i).getDaily_fee()));
 		}	
+		
 		System.out.println();
 	}
 
+	
+	
+	
 	public Campground campgroundReservationMenu( ArrayList<Campground> arrayList) {
-			while (true) {
-				System.out.println();
-				System.out.println();
-				System.out.println("Search for Campground Reservation");
-				System.out.println("   Name \t\tOpen \tClose \tDaily Fee");
+					
+		while (true) {
+			System.out.println();
+			System.out.println();
+			System.out.println("   Name            \tOpen \tClose   \tDaily Fee");
+			System.out.println("------------------------------------------------------");
+				
+				
 				for(int i = 0; i< arrayList.size(); i++) {	
 					int optionNum = i+1;
-					System.out.println(optionNum+") "+(arrayList.get(i).getName() + "\t\t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "\t" + arrayList.get(i).getDaily_fee()));
+					System.out.println(optionNum+") "+(arrayList.get(i).getName() + "      \t" + getMonthInName(arrayList.get(i).getOpen_from_mm()) + "\t" + getMonthInName(arrayList.get(i).getOpen_to_mm())  + "  \t" + arrayList.get(i).getDaily_fee()));
 				}	
+				
+				
+				
 				// Send the concatenated campground info strings to getChoiceFromOptions() and let them choose
 				System.out.println();
 				System.out.println("Which campground (enter 0 to cancel)");
@@ -90,19 +108,50 @@ public class Menu {
 	}
 		
 	
+	
 	public void displayAvailableSites(ArrayList<Site> siteList) {
 			
+		System.out.println();
 		System.out.println("Results Matching Your Search Criteria");
-		System.out.println("Site No. \tMax Occup. \tAccessible? \tMax RV Length \tUtility \tCost");
+		System.out.println();
+		System.out.println("Site No."+"\tMax Occup."+"\tAccessible?"+"\tMax RV Length"+"\tUtility"+"\t\tCost");
+		
+		
 		for(int i = 0; i< siteList.size(); i++) {	
-			System.out.println(siteList.get(i).getSite_number());
-			System.out.print(siteList.get(i).getMax_occupancy());
-			System.out.print(siteList.get(i).isAccessible());
-			System.out.print(siteList.get(i).getMax_rv_length());
-			System.out.print(siteList.get(i).isUtilities());
-			System.out.print(siteList.get(i).getTotal_amount());
-			System.out.println();
+			
+			
+			String maxRVvar =  ""+ siteList.get(i).getMax_rv_length() + "";
+			if(siteList.get(i).getMax_rv_length()==0) {maxRVvar = "N/A";}
+				
+				
+			System.out.println(siteList.get(i).getSite_number() + "  \t\t" + siteList.get(i).getMax_occupancy() + "  \t\t" + convertBooleanToWord(siteList.get(i).isAccessible()) +  "  \t\t"+  maxRVvar + " \t\t" + convertBooleanToWord(siteList.get(i).isUtilities()) + "  \t\t$" +  new BigDecimal(siteList.get(i).getTotal_amount()).setScale(2, RoundingMode.FLOOR)   );
+ 
+			
+			
 		}	
+		
+		System.out.println();
+		
+		System.out.print("Which site number should be reserved(enter 0 to cancel)? ");
+		String siteNumberUserInput = in.nextLine();
+		System.out.println("What name should the reservation be made under?");
+		String nameForReservation = in.nextLine();
+		
+		
+		
+		
+		
+		
+		
+		
+		// kill the program if they select 0
+		if(Integer.parseInt(siteNumberUserInput) == 0)  {System.exit(0);}
+		
+		
+		
+		
+		
+		
 	}
 
 
@@ -128,23 +177,25 @@ public class Menu {
 		out.println();
 		for(int i = 0; i < options.length; i++) {
 			int optionNum = i+1;
-			out.println(optionNum+") "+options[i]);
+			System.out.println(optionNum+") "+options[i]);
 		}
-		out.print("\nPlease choose an option >>> ");
-		out.flush();
+		System.out.print("\nPlease choose an option >>> ");
+		System.out.flush();
 	}
 
+	
 	// Prints the menu options to the screen
 	private void displayMenuOptions(Object[] options, String currentAmountEntered) {
-		out.println();
+		System.out.println();
 		for(int i = 0; i < options.length; i++) {
 			int optionNum = i+1;
-			out.println(optionNum+") "+options[i]);
+			System.out.println(optionNum+") "+options[i]);
 		}
-		out.print(currentAmountEntered + "\n");
-		out.print("\nPlease choose an option >>> ");
-		out.flush();
+		System.out.print(currentAmountEntered + "\n");
+		System.out.print("\nPlease choose an option >>> ");
+		System.out.flush();
 	}
+	
 	
 	
 	public LocalDate receiveDateFromUser(String message) {
@@ -185,6 +236,14 @@ public class Menu {
 		return "December";
 		
 	}
+	
+	private String convertBooleanToWord(Boolean value) {
+		
+		String output = "NO";
+			if(value) {output="YES";}
+		return output;
+	}
+	
 	
 	
 }

@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import com.techelevator.projects.model.Park;
 import com.techelevator.projects.model.Reservation;
 import com.techelevator.projects.model.ReservationDAO;
+import com.techelevator.projects.model.Site;
 
 public class JDBCReservationDAO implements ReservationDAO {
 
@@ -39,16 +40,26 @@ public class JDBCReservationDAO implements ReservationDAO {
 		
 	}
 
+	
 	@Override
-	public List<Park> getAllParks() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Park getParkById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public int saveReservation(Reservation reservationObject) {
+		
+		String sqlCreateReservation = "INSERT INTO reservation (site_id, name, from_date, to_date) VALUES (?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sqlCreateReservation, reservationObject.getSite_id(), reservationObject.getName(), reservationObject.getFrom_date(), reservationObject.getTo_date());
+		
+		String name = reservationObject.getName();
+		int site_id = reservationObject.getSite_id();
+		String sqlGetReservation = "SELECT reservation_id from reservation WHERE name = ? AND site_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetReservation, name, site_id);
+		reservationObject.setReservation_id(results.getInt("reservation_id"));
+		return reservationObject.getReservation_id();
+			
+		
+		
+		
+		
+		
 	}
 		
 

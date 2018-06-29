@@ -41,12 +41,16 @@ public class CampgroundCLI {
 	private static final String MAIN_MENU_OPTION_VIEW_CAMPGROUND = "View Campgrounds";
 	private static final String MAIN_MENU_SEARCH_FOR_RESERVATION = "Search for Reservation";
 	private static final String MAIN_MENU_RETURN_TO_PREVIOUS_SCREEN = "Return to Previous Screen";
+	
 	private static final String[] MAIN_MENU_OPTIONS = new String[] { MAIN_MENU_OPTION_VIEW_CAMPGROUND, 
 			MAIN_MENU_SEARCH_FOR_RESERVATION, 
 			MAIN_MENU_RETURN_TO_PREVIOUS_SCREEN};
+	
 	private static final String CAMPGROUND_RESERVATION_OPTION_SEARCH_AVAILABLE = "Search for Available Reservation";
+	
 	private static final String[] CAMPGROUND_RESERVATION_MENU_OPTIONS = new String[] { CAMPGROUND_RESERVATION_OPTION_SEARCH_AVAILABLE, 
 			MAIN_MENU_RETURN_TO_PREVIOUS_SCREEN};
+	
 	private static final String[] RESERVATION_MENU_CAMPGROUND = new String[] {"Which campground (enter 0 to cancel)"};
 	//private static final String[] RESERVATION_MENU_ARRIVALDATE = new String[] {"What is the arrival date __/__/____"};
 	//private static final String[] RESERVATION_MENU_DEPARTDATE = new String[] {"What is the departure date __/__/____"};
@@ -90,6 +94,9 @@ public class CampgroundCLI {
 			
 			parkNameArray = convertObjectListToNamesArray(parkList);
 
+			System.out.println("Select a Park for Further Details");
+			System.out.println();
+			
 			//Sends the names of parks, receives their choice as a string
 			String parkChoice = (String)menu.getChoiceFromOptions(parkNameArray);
 			
@@ -104,22 +111,41 @@ public class CampgroundCLI {
 				
 			
 			// Displays all the info about the park	
+			System.out.println();
+			
 			menu.displayParkInfo( theirChosenParkObject );
 				
 			String mainMenuChoice = (String)menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 			
 			ArrayList<Campground> campgroundList = new ArrayList<Campground>();
 			
+			
+			
 			if( mainMenuChoice == "View Campgrounds") {
 				
 				campgroundList = campgroundDAO.getAllCampgroundsInParkId( theirChosenParkObject.getPark_id());
+				
 				
 				// Send the list of campgrounds to the menu method to be displayed'
 				menu.displayCampgroundInfo(campgroundList, theirChosenParkObject);
 				
 				
+				
+				
 				// Send option to search for available reservations to menu method
+				
+				System.out.println("Select a Command:");
+				System.out.println();
+				
+				
+				
+				
+				
+				
 				String checkReservationMenuChoice = (String)menu.getChoiceFromOptions(CAMPGROUND_RESERVATION_MENU_OPTIONS);
+				
+				
+				
 				
 				// Check then act on menu response of Search for Available Reservations
 				
@@ -129,18 +155,22 @@ public class CampgroundCLI {
 				
 				if(checkReservationMenuChoice == "Search for Available Reservation") {
 					
-					
+					// displays the campground list again
 					theirChosenCampgroundObject = menu.campgroundReservationMenu(campgroundList);
+					
 					
 					reservation_Chosen_ArrivalDate = menu.receiveDateFromUser(" What is the arrival date? __/__/____ ");
 					
 					reservation_Chosen_DepartureDate = menu.receiveDateFromUser(" What is the departure date? __/__/____ ");
 					
-				
-					
+										
+					// gets the list of availalbe campsite objects
 					availableSiteList = siteDAO.getAvailableSites(theirChosenCampgroundObject.getCampground_id(), reservation_Chosen_ArrivalDate, reservation_Chosen_DepartureDate);
 					
+					
 					menu.displayAvailableSites(availableSiteList);
+					
+					
 					
 					
 			}
