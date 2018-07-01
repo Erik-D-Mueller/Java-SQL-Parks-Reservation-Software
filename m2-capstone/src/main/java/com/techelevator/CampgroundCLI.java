@@ -68,7 +68,6 @@ public class CampgroundCLI {
 		
 	}
 
-		
 	public CampgroundCLI(DataSource dataSource) {
 		
 		this.menu = new Menu(System.in, System.out);
@@ -81,7 +80,6 @@ public class CampgroundCLI {
 	
 	public void run() {
 
-		
 		while(true) {			
 			
 			Park theirChosenParkObjectFromScreenOne;
@@ -98,7 +96,6 @@ public class CampgroundCLI {
 			if( theirChoiceFromScreenTwo.contains("View Campgrounds")) 						{  				theirChoiceFromScreenThree = screenThree(theirChosenParkObjectFromScreenOne);		}
 			if( theirChoiceFromScreenTwo.contains("Search for Reservation")) 				{  				screenFour(theirChosenParkObjectFromScreenOne);										}
 			if( theirChoiceFromScreenTwo.contains("Return to Previous Screen")) 			{  				theirChosenParkObjectFromScreenOne = screenOne();									}									
-			
 
 			if( theirChoiceFromScreenThree.contains("Search for Available Reservation")) 	{  				screenFour(theirChosenParkObjectFromScreenOne); 									}					
 			if( theirChoiceFromScreenThree.contains("Return to Previous Screen")) 			{ 				theirChoiceFromScreenTwo = screenTwo(theirChosenParkObjectFromScreenOne); 			}
@@ -106,9 +103,7 @@ public class CampgroundCLI {
 	}
 			
 	}	
-			
-
-		
+					
 		// Takes an ArrayList of Park objects, returns an array of strings of their names
 		private String[] convertObjectListToNamesArray(ArrayList<Park> parkList) {
 			
@@ -123,8 +118,6 @@ public class CampgroundCLI {
 			parkNameArray[parkList.size()] = "quit";
 			return parkNameArray;
 		}
-		
-		
 		
 		// This method controls everything related to Screen One
 		private Park screenOne() {
@@ -167,9 +160,7 @@ public class CampgroundCLI {
 			
 			return theirResponse;
 			
-		}
-		
-		
+		}		
 		
 		// Display the campgrounds in that park, ask what they want to do
 		private String screenThree(Park theirChosenParkObject) {
