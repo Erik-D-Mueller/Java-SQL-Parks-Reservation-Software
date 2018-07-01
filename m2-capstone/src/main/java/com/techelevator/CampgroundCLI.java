@@ -223,15 +223,15 @@ public class CampgroundCLI {
 			// display available sites and capture info
 			menu.displayAvailableSites(availableSiteList);
 			String[] siteInfo = menu.selectSite();
-			Site theirChosenSite = siteDAO.getSiteBySiteNum(Integer.parseInt(siteInfo[0]));
+			Site theirChosenSite = siteDAO.getSiteBySiteNum(Integer.parseInt(siteInfo[0]), theirChosenCampgroundObject.getCampground_id());
 			int site_id = (int) theirChosenSite.getSite_id();
 			reservationObject.setSite_id(site_id);
 			reservationObject.setName(siteInfo[1]);
 			
 			/////////////////
 			
-			reservationObject = reservationDAO.saveReservation(reservationObject);
-			System.out.println("The reservation has been made and the confirmaiton ID is " + reservationObject.getReservation_id() );
+			int reservation_num = reservationDAO.saveReservation(reservationObject);
+			System.out.println("The reservation has been made and the confirmaiton ID is " + reservation_num);
 			
 			System.exit(0);
 			

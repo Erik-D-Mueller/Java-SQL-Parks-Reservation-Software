@@ -41,13 +41,16 @@ public class JDBCSiteDAO implements SiteDAO {
 		return availableSiteList;
 	}
 
-	public Site getSiteBySiteNum(int siteNum) {
-		String sqlSiteBySiteNum = "Select site_id FROM site WHERE site_number = ?";
-		Site siteBySiteNum = new Site();
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSiteBySiteNum, siteNum);
-		siteBySiteNum = createSiteObject(results);
+	public Site getSiteBySiteNum(int siteNum, int campground_id) {
+		String sqlSiteBySiteNum = "Select * FROM site WHERE site_number = ? AND campground_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSiteBySiteNum, siteNum, campground_id);
+		ArrayList <Site> sitesBySiteNum = new ArrayList<Site>();
 		
-		return siteBySiteNum;
+		while(results.next()) {
+			Site siteObject2 = createSiteObject2(results);
+			sitesBySiteNum.add(siteObject2);
+		}
+		return sitesBySiteNum.get(0);
 	}
 	
 	
@@ -64,7 +67,20 @@ public class JDBCSiteDAO implements SiteDAO {
 		siteObject.setTotal_amount(results.getDouble("total_fee"));
 		
 		return siteObject;
+	}
 	
+	private Site createSiteObject2(SqlRowSet results) {
+		Site siteObject2 = new Site();
+		
+		siteObject2.setSite_id(results.getInt("site_id"));
+		siteObject2.setCampground_id(results.getInt("campground_id"));
+		siteObject2.setSite_number(results.getInt("site_number"));
+		siteObject2.setMax_occupancy(results.getInt("max_occupancy"));
+		siteObject2.setAccessible(results.getBoolean("accessible"));
+		siteObject2.setMax_rv_length(results.getInt("max_rv_length"));
+		siteObject2.setUtilities(results.getBoolean("utilities"));
+		
+		return siteObject2;
 }
 	
 	
