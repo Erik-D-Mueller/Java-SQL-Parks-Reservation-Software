@@ -195,11 +195,6 @@ public class CampgroundCLI {
 			// generate a list of all the campground objects in their chosen park
 			campgroundList = campgroundDAO.getAllCampgroundsInParkId( theirChosenParkObject.getPark_id());
 			
-			// Send the list of campgrounds to the a method in menu to be displayed'
-			menu.displayCampgroundInfo(campgroundList, theirChosenParkObject);
-			
-			System.out.println("Which Campground?");
-			
 			// displays the campground list again
 			theirChosenCampgroundObject = menu.campgroundReservationMenu(campgroundList);
 			
@@ -216,11 +211,18 @@ public class CampgroundCLI {
 			
 			availableSiteList = siteDAO.getAvailableSites(theirChosenCampgroundObject.getCampground_id(), reservationObject.getFrom_date(), reservationObject.getTo_date());
 			
+			// display available sites and capture info
 			menu.displayAvailableSites(availableSiteList);
+			String[] siteInfo = menu.selectSite();
+			Site theirChosenSite = siteDAO.getSiteBySiteNum(Integer.parseInt(siteInfo[0]), theirChosenCampgroundObject.getCampground_id());
+			int site_id = (int) theirChosenSite.getSite_id();
+			reservationObject.setSite_id(site_id);
+			reservationObject.setName(siteInfo[1]);
 			
 			/////////////////
 			
-			System.out.println("The reservation has been made and the confirmaiton ID is " + reservationObject.getReservation_id() );
+			int reservation_num = reservationDAO.saveReservation(reservationObject);
+			System.out.println("The reservation has been made and the confirmaiton ID is " + reservation_num);
 			
 			System.exit(0);
 			

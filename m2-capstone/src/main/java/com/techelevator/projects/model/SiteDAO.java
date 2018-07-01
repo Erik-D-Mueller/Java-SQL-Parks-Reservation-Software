@@ -12,5 +12,7 @@ public interface SiteDAO {
 	 * @return available sites as objects in a List
 	 */
 	public ArrayList<Site> getAvailableSites(int campground_id, LocalDate arrival_date, LocalDate depart_date);
-
+	
+	public Site getSiteBySiteNum(int siteNum, int campground_id);
+		
 }
