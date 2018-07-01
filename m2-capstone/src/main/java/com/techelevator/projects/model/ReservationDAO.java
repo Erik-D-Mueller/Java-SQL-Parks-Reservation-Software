@@ -7,7 +7,7 @@ public interface ReservationDAO {
 
 
 
-public int saveReservation(Reservation reservationObject);
+public Reservation saveReservation(Reservation reservationObject);
 
 
 }

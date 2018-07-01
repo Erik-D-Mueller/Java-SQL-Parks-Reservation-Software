@@ -97,7 +97,7 @@ public class Menu {
 				
 				// Send the concatenated campground info strings to getChoiceFromOptions() and let them choose
 				System.out.println();
-				System.out.println("Which campground (enter 0 to cancel)");
+				System.out.println("Which campground (enter 0 to cancel)?");
 				String userInput = in.nextLine();
 				if (Integer.parseInt(userInput) <= arrayList.size()) {
 					Campground theirChosenCampgroundObject = new Campground();
@@ -132,26 +132,26 @@ public class Menu {
 		
 		System.out.println();
 		
+	}
+	
+	public String[] selectSite () {
+		Site chosenSite = new Site();
+		
 		System.out.print("Which site number should be reserved(enter 0 to cancel)? ");
 		String siteNumberUserInput = in.nextLine();
+		chosenSite.setSite_number(Integer.parseInt(siteNumberUserInput));
+		
 		System.out.println("What name should the reservation be made under?");
 		String nameForReservation = in.nextLine();
-		
-		
-		
-		
-		
-		
 		
 		
 		// kill the program if they select 0
 		if(Integer.parseInt(siteNumberUserInput) == 0)  {System.exit(0);}
 		
-		
-		
-		
-		
-		
+		// return user answers to CLI
+		String[] siteSelectionInfo = {siteNumberUserInput, nameForReservation};
+		return siteSelectionInfo;
+
 	}
 
 

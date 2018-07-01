@@ -41,6 +41,14 @@ public class JDBCSiteDAO implements SiteDAO {
 		return availableSiteList;
 	}
 
+	public Site getSiteBySiteNum(int siteNum) {
+		String sqlSiteBySiteNum = "Select site_id FROM site WHERE site_number = ?";
+		Site siteBySiteNum = new Site();
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSiteBySiteNum, siteNum);
+		siteBySiteNum = createSiteObject(results);
+		
+		return siteBySiteNum;
+	}
 	
 	
 	private Site createSiteObject(SqlRowSet results) {
