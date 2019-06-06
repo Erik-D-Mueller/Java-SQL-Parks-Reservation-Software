@@ -70,17 +70,17 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		return null;
 	}
 
-	private Campground createCampgroundObject(SqlRowSet results) {
+	private Campground createCampgroundObject(SqlRowSet resultsObtained) {
 		
-		Campground campgroundObject1 = new Campground();		
+		Campground campgroundObjectOne = new Campground();		
 		
-		campgroundObject1.setCampground_id(results.getInt("campground_id"));
-		campgroundObject1.setPark_id(results.getInt("park_id"));
-		campgroundObject1.setName(results.getString("name"));
-		campgroundObject1.setOpen_from_mm(results.getInt("open_from_mm"));
-		campgroundObject1.setOpen_to_mm(results.getInt("open_to_mm"));
-		campgroundObject1.setDaily_fee( results.getFloat("daily_fee"));
+		campgroundObjectOne.setOpen_from_mm(resultsObtained.getInt("open_from_mm"));
+		campgroundObjectOne.setDaily_fee( resultsObtained.getFloat("daily_fee"));
+		campgroundObjectOne.setCampground_id(resultsObtained.getInt("campground_id"));
+		campgroundObjectOne.setOpen_to_mm(resultsObtained.getInt("open_to_mm"));
+		campgroundObjectOne.setPark_id(resultsObtained.getInt("park_id"));
+		campgroundObjectOne.setName(resultsObtained.getString("name"));
 		
-		return campgroundObject1;
+		return campgroundObjectOne;
 	}
 }

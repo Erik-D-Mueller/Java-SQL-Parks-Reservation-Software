@@ -27,7 +27,6 @@ import com.techelevator.projects.model.jdbc.JDBCSiteDAO;
 //import com.techelevator.projects.view.Menu;
 //import com.techelevator.projects.view.Menu;
 
-
 public class CampgroundCLI {
 
 	private Menu menu;
@@ -54,14 +53,12 @@ public class CampgroundCLI {
 	private static final String[] RESERVATION_MENU_CAMPGROUND = new String[] {"Which campground (enter 0 to cancel)"};
 	//private static final String[] RESERVATION_MENU_ARRIVALDATE = new String[] {"What is the arrival date __/__/____"};
 	//private static final String[] RESERVATION_MENU_DEPARTDATE = new String[] {"What is the departure date __/__/____"};
-
-	
 	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
 		dataSource.setUsername("postgres");
-		//dataSource.setPassword("postgres1");
+		dataSource.setPassword("postgres1");
 		
 		CampgroundCLI application = new CampgroundCLI(dataSource);
 		application.run();
@@ -92,7 +89,7 @@ public class CampgroundCLI {
 			// Display the park info, ask what they want to do
 			theirChoiceFromScreenTwo = screenTwo(theirChosenParkObjectFromScreenOne);
 	
-			
+			// I like to keep the code very parallel like this
 			if( theirChoiceFromScreenTwo.contains("View Campgrounds")) 						{  				theirChoiceFromScreenThree = screenThree(theirChosenParkObjectFromScreenOne);		}
 			if( theirChoiceFromScreenTwo.contains("Search for Reservation")) 				{  				screenFour(theirChosenParkObjectFromScreenOne);										}
 			if( theirChoiceFromScreenTwo.contains("Return to Previous Screen")) 			{  				theirChosenParkObjectFromScreenOne = screenOne();									}									
@@ -177,9 +174,9 @@ public class CampgroundCLI {
 			System.out.println("Select a Command:");
 			System.out.println();
 						
-			String theirResponse = (String)menu.getChoiceFromOptions(CAMPGROUND_RESERVATION_MENU_OPTIONS);
+			String theirAnswerResponse = (String)menu.getChoiceFromOptions(CAMPGROUND_RESERVATION_MENU_OPTIONS);
 			
-			return  theirResponse;
+			return  theirAnswerResponse;
 			
 		}
 			

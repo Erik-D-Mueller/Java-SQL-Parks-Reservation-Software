@@ -1,6 +1,5 @@
 package com.techelevator.projects.model;
 
-
 public class Campground {
 
 	private int campground_id;
@@ -9,7 +8,6 @@ public class Campground {
 	private int open_from_mm;
 	private int open_to_mm;
 	private float daily_fee;
-	
 	
 	public int getCampground_id() {
 		return campground_id;
@@ -48,7 +46,4 @@ public class Campground {
 		this.daily_fee = dailyfee;
 	}
 	
-	
-
-
 }

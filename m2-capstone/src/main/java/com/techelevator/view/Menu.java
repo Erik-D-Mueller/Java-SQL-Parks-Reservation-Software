@@ -59,8 +59,6 @@ public class Menu {
 		
 	}
 	
-	
-
 	public void displayCampgroundInfo(ArrayList<Campground> campgroundList, Park park) {
 		System.out.println();
 		System.out.println(park.getName()+" National Park Campgrounds");
@@ -76,7 +74,6 @@ public class Menu {
 		System.out.println();
 	}
 
-	
 	
 	
 	public Campground campgroundReservationMenu( ArrayList<Campground> arrayList) {
@@ -107,8 +104,6 @@ public class Menu {
 			}
 	}
 		
-	
-	
 	public void displayAvailableSites(ArrayList<Site> siteList) {
 			
 		System.out.println();
@@ -124,9 +119,7 @@ public class Menu {
 			if(siteList.get(i).getMax_rv_length()==0) {maxRVvar = "N/A";}
 				
 				
-			System.out.println(siteList.get(i).getSite_number() + "  \t\t" + siteList.get(i).getMax_occupancy() + "  \t\t" + convertBooleanToWord(siteList.get(i).isAccessible()) +  "  \t\t"+  maxRVvar + " \t\t" + convertBooleanToWord(siteList.get(i).isUtilities()) + "  \t\t$" +  new BigDecimal(siteList.get(i).getTotal_amount()).setScale(2, RoundingMode.FLOOR)   );
- 
-			
+			System.out.println(siteList.get(i).getSite_number() + "  \t\t" + siteList.get(i).getMax_occupancy() + "  \t\t" + convertBooleanToWord(siteList.get(i).isAccessible()) +  "  \t\t"+  maxRVvar + " \t\t" + convertBooleanToWord(siteList.get(i).isUtilities()) + "  \t\t$" +  new BigDecimal(siteList.get(i).getTotal_amount()).setScale(2, RoundingMode.FLOOR)   );	
 			
 		}	
 		
@@ -138,8 +131,11 @@ public class Menu {
 		Site chosenSite = new Site();
 		
 		System.out.print("Which site number should be reserved(enter 0 to cancel)? ");
+		
 		String siteNumberUserInput = in.nextLine();
+		
 		chosenSite.setSite_number(Integer.parseInt(siteNumberUserInput));
+		
 		
 		System.out.println("What name should the reservation be made under?");
 		String nameForReservation = in.nextLine();
@@ -219,7 +215,7 @@ public class Menu {
 		
 	}
 	
-	
+	// using the == and not === to not be too strict
 	public String getMonthInName(int mm) {
 		
 		if(mm==1) {return "January";}

@@ -2,7 +2,7 @@ package com.techelevator.projects.model;
 
 public class Site {
 
-	private int site_id;
+	private int site_id_number;
 	private int campground_id;
 	private int site_number;
 	private int max_occupancy;
@@ -11,10 +11,10 @@ public class Site {
 	private boolean utilities;
 	private double total_amount;
 	public long getSite_id() {
-		return site_id;
+		return site_id_number;
 	}
 	public void setSite_id(int site_id) {
-		this.site_id = site_id;
+		this.site_id_number = site_id;
 	}
 	public int getCampground_id() {
 		return campground_id;
@@ -58,7 +58,6 @@ public class Site {
 	public void setTotal_amount(double total_amount) {
 		this.total_amount = total_amount;
 	}
-	
 	
 	
 }

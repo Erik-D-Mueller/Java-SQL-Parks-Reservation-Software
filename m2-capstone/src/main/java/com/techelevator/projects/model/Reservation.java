@@ -65,10 +65,4 @@ public class Reservation {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 }
